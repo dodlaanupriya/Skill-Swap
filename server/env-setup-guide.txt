@@ -1,0 +1,25 @@
+# SkillSwap Server Environment Configuration
+# Copy this file to .env and update the values as needed
+
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# Database Configuration - Choose ONE option:
+
+# Option 1: Local MongoDB (default)
+MONGODB_URI=mongodb://localhost:27017/skillswap
+
+# Option 2: MongoDB Atlas (cloud) - Replace with your connection string
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/skillswap?retryWrites=true&w=majority
+
+# JWT Configuration
+JWT_SECRET=your_super_secret_jwt_key_change_this_in_production_12345
+
+# CORS Configuration (optional)
+CORS_ORIGIN=http://localhost:3000
+
+
+
+
+
