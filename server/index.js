@@ -350,6 +350,11 @@ app.post('/api/messages', auth, [
   }
 
   try {
+    // Check if database is available
+    if (!messagesCollection) {
+      return res.status(500).json({ msg: 'Database not configured. Please set up Firebase following the FIREBASE_SETUP.md guide.' });
+    }
+
     const { receiverId, content, skillId } = req.body;
     const messageData = {
       senderId: req.user.user.id,
@@ -363,13 +368,18 @@ app.post('/api/messages', auth, [
     const messageDoc = await messageRef.get();
     res.json({ id: messageDoc.id, ...messageDoc.data() });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Error creating message:', err.message);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
   }
 });
 
 app.get('/api/messages', auth, async (req, res) => {
   try {
+    // Check if database is available
+    if (!messagesCollection) {
+      return res.status(500).json({ msg: 'Database not configured. Please set up Firebase following the FIREBASE_SETUP.md guide.' });
+    }
+
     const messagesSnapshot = await messagesCollection
       .where('senderId', '==', req.user.user.id)
       .get();
@@ -417,8 +427,8 @@ app.get('/api/messages', auth, async (req, res) => {
     
     res.json(allMessages);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    console.error('Error fetching messages:', err.message);
+    res.status(500).json({ msg: 'Server error: ' + err.message });
   }
 });
 

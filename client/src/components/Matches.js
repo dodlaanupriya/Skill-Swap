@@ -20,7 +20,7 @@ import {
   Message as MessageIcon
 } from '@mui/icons-material';
 
-const Matches = () => {
+const Matches = ({ onSendMessage }) => {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -40,14 +40,9 @@ const Matches = () => {
     }
   };
 
-  const handleSendMessage = async (match) => {
-    try {
-      // This would open a message dialog or navigate to messages
-      setMessage(`Opening conversation with ${match.user.name}...`);
-      // For now, we'll just show a success message
-      setTimeout(() => setMessage(''), 3000);
-    } catch (err) {
-      setMessage('Error sending message: ' + err.message);
+  const handleSendMessage = (match) => {
+    if (onSendMessage) {
+      onSendMessage(match.user);
     }
   };
 
@@ -89,7 +84,7 @@ const Matches = () => {
       ) : (
         <Grid container spacing={3} sx={{ mt: 2 }}>
           {matches.map((match, index) => (
-            <Grid item xs={12} sm={6} md={4} key={`${match.user._id}-${index}`}>
+            <Grid item xs={12} sm={6} md={4} key={`${match.user.id}-${index}`}>
               <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Box display="flex" alignItems="center" sx={{ mb: 2 }}>

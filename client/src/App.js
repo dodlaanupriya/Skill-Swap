@@ -13,9 +13,15 @@ import Messages from './components/Messages';
 function AppContent() {
   const { user, logout } = useAuth();
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const handleLogout = () => {
     logout();
+  };
+
+  const handleNavigateToMessages = (user) => {
+    setSelectedUser(user);
+    setCurrentPage('messages');
   };
 
   if (!user) {
@@ -62,8 +68,8 @@ function AppContent() {
         {currentPage === 'dashboard' && <Dashboard />}
         {currentPage === 'profile' && <Profile />}
         {currentPage === 'skills' && <Skills />}
-        {currentPage === 'matches' && <Matches />}
-        {currentPage === 'messages' && <Messages />}
+        {currentPage === 'matches' && <Matches onSendMessage={handleNavigateToMessages} />}
+        {currentPage === 'messages' && <Messages selectedUser={selectedUser} onBackToMatches={() => setCurrentPage('matches')} />}
       </Container>
     </Box>
   );
